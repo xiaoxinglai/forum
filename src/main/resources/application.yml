@@ -21,6 +21,7 @@ spring:
         check-template: false
         mode: HTML5
         cache: false
+        
 #logging:
  # pattern:
   #  console: "%d - %msg%n"
