@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="fragment/layoutAdmin">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<title>答疑系统后台管理</title>
+	</head>
+	<body>
+
+	<div layout:fragment="pagemain">
+			<!--内容-->
+		<div class="pager_main">
+			<!--面包屑导航-->
+			<ol class="breadcrumb" >
+				<li><a href="#">管理首页</a></li>
+				<li><a href="#">栏目</a></li>
+				<li><a href="#">增加栏目</a></li>
+			</ol>
+
+			<div class="row">
+				<div class="col-md-12">
+					<form>
+
+						<div style="margin-bottom: 5px;">公告标题：<input  class="form-control"/></div>
+
+
+
+
+
+
+                        <div id="summernote">
+
+
+                        </div>
+
+							<script>
+                            $(document).ready(function() {
+                                $('#summernote').summernote();
+                            });
+					    	</script>
+
+						<button class="btn btn-default">提交</button>
+
+
+					</form>
+				</div>
+			</div>
+
+
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">问题列表</div>
+						<div class="panel-body ">
+							<table class="table table-striped table-hover table-bordered">
+								<thead>
+								<tr>
+									<th>ID</th>
+									<th>公告名称</th>
+									<th>操作</th>
+
+								</tr>
+								</thead>
+
+								<tbody>
+								<tr>
+									<td>1</td><td>系统维护的通知</td><td><button class="btn btn-info">编辑</button>&nbsp;<button class="btn btn-info">删除</button></td>
+								</tr>
+								<tr>
+									<td>2</td><td>助教招聘的通知</td><td><button class="btn btn-info">编辑</button>&nbsp;<button class="btn btn-info">删除</button></td>
+
+								</tr>
+								<tr>
+									<td>3</td><td>平台规范须知</td><td><button class="btn btn-info">编辑</button>&nbsp;<button class="btn btn-info">删除</button></td>
+
+								</tr>
+
+
+
+								</tbody>
+							</table>
+							<div class="col-md-12">
+								<nav class="pull-right" >
+									<ul class="pagination" style="margin-top: 5px;">
+										<li>
+											<a href="#" aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+										<li><a href="#">1</a></li>
+										<li><a href="#">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#">4</a></li>
+										<li><a href="#">5</a></li>
+										<li>
+											<a href="#" aria-label="Next">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+
+
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+	</div>
+
+
+
+	</body>
+</html>

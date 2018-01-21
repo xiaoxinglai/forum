@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="fragment/layoutAdmin">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<title>答疑系统后台管理</title>
+	</head>
+	<body>
+
+	<div layout:fragment="pagemain">
+
+		<div class="pager_main">
+			<!--面包屑导航-->
+			<ol class="breadcrumb" >
+				<li><a href="#">管理首页</a></li>
+				<li><a href="#">栏目</a></li>
+				<li><a href="#">增加栏目</a></li>
+			</ol>
+
+
+
+			<div class="row">
+				<div class="col-md-12">
+					<h1 style="text-align: center;">java环境的配置</h1>
+				</div>
+				<!--
+                    作者：offline
+                    时间：2017-03-29
+                    描述：信息
+                -->
+				<div class="col-md-offset-4 col-md-4"><h6 style="text-align: center;">提问时间：2017/3/27 21:00</h6></div>
+				<div class="col-md-2"><h6 style="text-align: center;">提问人：黄同学</h6></div>
+				<!--
+                    作者：offline
+                    时间：2017-03-29
+                    描述：内容
+                -->
+				<div class="col-md-12">
+					<h4>问题描述</h4>
+					<div style="background-color:lightgray; width: 100%;">
+						<div style="padding: 20px 5px 5px 20px;">
+							<p>
+								java环境变量怎么配置啊！问下老师
+							</p>
+						</div>
+					</div>
+
+				</div>
+
+				<!--
+                    作者：offline
+                    时间：2017-03-29
+                    描述：回复
+                -->
+				<div class="col-md-12" style="margin-top: 20px;">
+					<form>
+						<div style="margin-top: 10px;">
+							分类：<select class="form-control">
+							<option>C语言</option>
+							<option>java</option>
+							<option>C++</option>
+							<option>sql</option>
+							<option>数据结构</option>
+						</select>
+						</div>
+						<div style="margin-top: 10px; margin-bottom: 10px;">
+							等级：<select class="form-control">
+							<option>初级</option>
+							<option>中级</option>
+							<option>高级</option>
+
+						</select>
+						</div>
+						<div id="summernote"><br/><br/>
+							<br/><br/><br/><br/><br/><br/>
+							<br/><br/><br/><br/><br/><br/><br/>
+							<br/><br/><br/></div>
+						<script>
+                            $(document).ready(function() {
+                                $('#summernote').summernote();
+                            });
+						</script>
+
+						<button class="btn btn-default">提交</button>
+
+
+					</form>
+
+				</div>
+
+
+			</div>
+
+
+		</div>
+
+
+
+	</div>
+	</body>
+</html>

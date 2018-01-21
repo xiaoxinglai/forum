@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var websocket = null;
+    if ('WebSocket' in Window) {
+        websocket = new WebSocket('ws://');
+
+    } else {
+        alert('该浏览器不支持websocket');
+    }
+
+
+    websocket.onopen=function (event) {
+        console.log('建立连接');
+        
+    }
+
+    websocket.onclose=function (event) {
+
+        console.log('连接关闭');
+    }
+
+    websocket.onmessage=function (event) {
+
+
+        console.log('收到消息'+event.data);
+        //todo
+    }
+
+    websocket.onerror=function (event) {
+        console.log('通信错误');
+        
+    }
+
+    Window.onbeforeunload=function () {
+        websocket.close();
+    }
+
+
+</script>
+</body>
+</html>

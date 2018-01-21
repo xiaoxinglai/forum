@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<title>答疑系统后台管理</title>
+
+		<link rel="stylesheet"  href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+
+
+		<script type="application/javascript" src="../../static/js/jquery.js" th:src="@{/js/jquery.js}" ></script>
+		<script language="JavaScript" src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
+		<style type="text/css">
+			@media  (min-width: 768px) {
+			#slide_sub	{
+				width: 250px;
+				margin-top: 51px;
+				position: absolute;
+				z-index: 1;
+				height: 800px;
+			}
+			.mysearch{
+				margin: 10px 0;
+			}
+			.pager_main{
+				margin-left: 255px;
+			}
+			}
+		</style>
+	</head>
+	<body>
+		<!--导航-->
+			<nav class="navbar navbar-default">
+				<div class="navbar-header">
+					<button type="button" 
+						 class="navbar-toggle collapsed" 
+						 data-toggle="collapse" 
+						 data-target="#slide_sub" > 
+						<span class="sr-only"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="#" class="navbar-brand">网站后台管理</a>
+				</div>
+			
+				<ul  class=" nav navbar-nav navbar-right" style="margin-right: 25px;">
+					<li><a href="#"><span class="badge" style="background: red;">23</span></a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;注销</a></li>
+				</ul>
+				
+				<!--
+                	作者：offline
+                	时间：2016-07-30
+                	描述：侧边功能栏
+                -->
+				<div class="navbar-default navbar-collapse" style="margin-top: 51px;" id="slide_sub">
+					<ul class="nav">
+						<li>
+						<!--搜索-->
+						<div class="input-group mysearch">
+							<input type="text"  class="form-control"/>
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" >
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+							</span>
+							
+						</div>
+						
+						
+						</li>
+						
+						<li><a href="#sub1" class="collapse" data-toggle="collapse">管理功能</a></li>
+						<ul id="sub1" class="nav collapse">
+						<li><a href="admin.html"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;问题管理</a></li>
+							<li><a href="#"><span class="glyphicon glyphicon-user "></span>&nbsp;管理员管理</a></li>
+						</ul>
+						
+						<li><a href="#sub2" class="collapse" data-toggle="collapse">公告管理</a></li>
+							<ul id="sub2" class="nav collapse">
+				
+							<li><a href="editgonggao.html"><span class="glyphicon glyphicon-user "></span>&nbsp;公告编辑</a></li>
+					
+						</ul>
+						
+						<li><a href="#sub3" class="collapse" data-toggle="collapse">分类管理</a></li>
+							<ul id="sub3" class="nav collapse">
+							<li><a href="editfenlei.html"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;分类编辑</a></li>
+						</ul>
+							
+
+
+
+					</ul>
+					
+				   </div>
+				
+		
+			</nav>
+			
+			<!--内容-->
+		<div layout:fragment="pagemain">
+
+		</div>
+
+
+   <!-- include summernote css/js-->
+        <link href="../../static/dist/summernote.css"  th:href="@{/dist/summernote.css}"  rel="stylesheet"/>
+        <script src="../../static/dist/summernote.js" th:src="@{/dist/summernote.js}"></script>
+
+    </body>
+</html>

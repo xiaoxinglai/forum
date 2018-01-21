@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://daily-mhc-o.mysql.rds.aliyuncs.com:3306/db_bk
+    username: bk
+    password: qURfiR2NFG
+  #jpa:
+    #hibernate:
+     # ddl-auto: update
+    #show-sql: true
+
+  thymeleaf:
+        enabled: true
+        prefix: classpath:/templates/
+        suffix: .html
+        content-type: text/html
+        encoding: UTF-8
+        check-template-location: false
+        check-template: false
+        mode: HTML5
+        cache: false
+#logging:
+ # pattern:
+  #  console: "%d - %msg%n"
+  #path: /Users/user12/documents/test
+  #file: /Users/user12/documents/test/test1.log
+  #level:
+   #  com.nchu.controller.logTest: debug
+  #level: debug
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+ # type-aliases-package: com.nchu.domain.DO
+  #mapper-locations: classpath:mybatis-mapper/*.xml
