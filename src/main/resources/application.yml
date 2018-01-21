@@ -6,10 +6,11 @@ spring:
     url: jdbc:mysql://daily-mhc-o.mysql.rds.aliyuncs.com:3306/db_bk
     username: bk
     password: qURfiR2NFG
-  #jpa:
-    #hibernate:
-     # ddl-auto: update
-    #show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 
   thymeleaf:
         enabled: true
@@ -29,8 +30,3 @@ spring:
   #level:
    #  com.nchu.controller.logTest: debug
   #level: debug
-
-mybatis:
-  config-location: classpath:mybatis-config.xml
- # type-aliases-package: com.nchu.domain.DO
-  #mapper-locations: classpath:mybatis-mapper/*.xml

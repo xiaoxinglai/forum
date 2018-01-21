@@ -4,17 +4,21 @@ package com.nchu.domain.DO;
  * Created by user12 on 2017/12/11.
  */
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
-//@Entity
+@Entity
 public class User {
 
-    //@Id
-   // @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long uId;
 
-   // @NotNull(message = "学号不能为空")
+    @NotNull(message = "学号不能为空")
     private Long uNo;
     private String uName;
     private String gender;

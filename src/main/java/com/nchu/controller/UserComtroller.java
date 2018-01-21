@@ -4,8 +4,7 @@ import com.nchu.Utils.ResultUtil;
 import com.nchu.domain.DO.User;
 import com.nchu.domain.Result.Result;
 import com.nchu.enums.ResultEnum;
-import com.nchu.mapper.UserMapper;
-//import com.nchu.service.userService;
+import com.nchu.service.userService;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -31,28 +30,14 @@ import java.util.List;
 @Controller
 public class UserComtroller {
 
-//    @Autowired
-//    private userService userService;
-
     @Autowired
-    private UserMapper userMapper;
-
-
-
-    @RequestMapping(value = "/userMapper/{uId}",method = RequestMethod.GET)
-    @ResponseBody
-    public User getUserMapperById(@PathVariable("uId") Long uId){
-        return userMapper.selectUserById(uId);
-
-
-    }
-
+    private userService userService;
 
     @GetMapping(value = "/students/{uNo}")
     @ResponseBody
     public List<User> getUserAllForuNo(@PathVariable("uNo") Long uNo) {
 
-        return  null;// userService.getUserOne(uNo);
+        return userService.getUserOne(uNo);
 
     }
 
@@ -70,7 +55,7 @@ public class UserComtroller {
 
         List<User> data = new ArrayList<>();
 
-      //  data.add(userService.sign(user));
+        data.add(userService.sign(user));
 
 
         return ResultUtil.success(data);
