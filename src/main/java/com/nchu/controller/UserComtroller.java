@@ -1,9 +1,11 @@
 package com.nchu.controller;
 
 import com.nchu.Utils.ResultUtil;
+import com.nchu.domain.DO.Question;
 import com.nchu.domain.DO.User;
 import com.nchu.domain.Result.Result;
 import com.nchu.enums.ResultEnum;
+import com.nchu.mapper.QuestionMapper;
 import com.nchu.mapper.UserMapper;
 //import com.nchu.service.userService;
 import jxl.Workbook;
@@ -36,7 +38,16 @@ public class UserComtroller {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionMapper questionMapper;
 
+    @RequestMapping(value = "/questionMapperId/{Id}",method = RequestMethod.GET)
+    @ResponseBody
+    public Question getquestionMapperId(@PathVariable("Id") Long Id){
+        return questionMapper.selectByPrimaryKey(Id);
+
+
+    }
 
 
     @RequestMapping(value = "/userMapper/{uId}",method = RequestMethod.GET)
