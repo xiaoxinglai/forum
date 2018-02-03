@@ -7,7 +7,7 @@ import com.nchu.domain.Result.Result;
 import com.nchu.enums.ResultEnum;
 import com.nchu.mapper.QuestionMapper;
 import com.nchu.mapper.UserMapper;
-//import com.nchu.service.userService;
+import com.nchu.service.WebSocket;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//import com.nchu.service.userService;
+
 /**
  * @author laixiaoxing
  * Created by user12 on 2017/12/11.
@@ -40,11 +42,14 @@ public class UserComtroller {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private WebSocket webSocket;
 
     @RequestMapping(value = "/questionMapperId/{Id}",method = RequestMethod.GET)
     @ResponseBody
     public Question getquestionMapperId(@PathVariable("Id") Long Id){
-        return questionMapper.selectByPrimaryKey(Id);
+        webSocket.sendMessage("查询了id");
+        return null; //questionMapper.selectByPrimaryKey(Id);
 
 
     }
@@ -183,4 +188,9 @@ public class UserComtroller {
         return "admin/question";
     }
 
+    @GetMapping(value = "/websocket")
+    public String websocket() {
+
+        return "fragment/websocket";
+    }
 }
