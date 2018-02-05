@@ -1,18 +1,16 @@
 package com.nchu.enums;
 
 /**
- * Created by user12 on 2017/12/13.
+ * Created by user12 on 2018/2/3.
  */
-public enum ResultEnum {
-    UNKOWN_ERROR(-1,"未知错误"),
-    SUCCESS(0,"成功"),
-    SNO_NULL_ERROR(1,"学号不能未空"),
-    SQL_EXCEPTION(2,"sql执行出错"),
+public enum ParamEnum {
+    PARAM_IS_NULL(10,"参数为空"),
+    NO_IS_REPEAT(11,"学号重复"),
     ;
     private Integer code;
     private String msg;
 
-    ResultEnum(Integer code,String msg){
+    ParamEnum(Integer code,String msg){
         this.code=code;
         this.msg=msg;
 

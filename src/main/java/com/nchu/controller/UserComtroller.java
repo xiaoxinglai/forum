@@ -1,13 +1,10 @@
 package com.nchu.controller;
 
-import com.nchu.Utils.ResultUtil;
-import com.nchu.domain.DO.Question;
+import com.fasterxml.jackson.core.JsonEncoding;
 import com.nchu.domain.DO.User;
-import com.nchu.domain.Result.Result;
-import com.nchu.enums.ResultEnum;
-import com.nchu.mapper.QuestionMapper;
 import com.nchu.mapper.UserMapper;
-import com.nchu.service.WebSocket;
+import com.nchu.result.BizResult;
+import com.nchu.service.IUserService;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -15,14 +12,16 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 //import com.nchu.service.userService;
@@ -35,63 +34,60 @@ import java.util.List;
 @Controller
 public class UserComtroller {
 
-//    @Autowired
-//    private userService userService;
-
     @Autowired
+    private IUserService userService;
+
+   @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private QuestionMapper questionMapper;
-    @Autowired
-    private WebSocket webSocket;
-
-    @RequestMapping(value = "/questionMapperId/{Id}",method = RequestMethod.GET)
-    @ResponseBody
-    public Question getquestionMapperId(@PathVariable("Id") Long Id){
-        webSocket.sendMessage("查询了id");
-        return null; //questionMapper.selectByPrimaryKey(Id);
-
-
-    }
-
+//     @Autowired
+//    private WebSocket webSocket;
+//
+//    @RequestMapping(value = "/questionMapperId/{Id}",method = RequestMethod.GET)
+//    @ResponseBody
+//    public Question getquestionMapperId(@PathVariable("Id") Long Id){
+//        webSocket.sendMessage("查询了id");
+//        return null; //questionMapper.selectByPrimaryKey(Id);
+//
+//
+//    }
+//
 
     @RequestMapping(value = "/userMapper/{uId}",method = RequestMethod.GET)
     @ResponseBody
     public User getUserMapperById(@PathVariable("uId") Long uId){
-        return userMapper.selectUserById(uId);
+        return userMapper.selectByPrimaryKey(uId);
 
 
     }
 
-
-    @GetMapping(value = "/students/{uNo}")
-    @ResponseBody
-    public List<User> getUserAllForuNo(@PathVariable("uNo") Long uNo) {
-
-        return  null;// userService.getUserOne(uNo);
-
-    }
-
-    @PostMapping(value = "/sign")
-    @ResponseBody
-    public Result<User> insertUser(@RequestBody @Valid User user, BindingResult bindingResult) throws Exception {
-
-        if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getFieldError().getDefaultMessage());
-
-            return ResultUtil.error(ResultEnum.SNO_NULL_ERROR.getCode(), ResultEnum.SNO_NULL_ERROR.getMsg());
-
+    @RequestMapping(value = "/doSign",method = RequestMethod.POST)
+    public String getUserMapperById(@Valid User user,BindingResult result,Model model){
+        if(result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+            for (ObjectError error : list) {
+                System.out.println(error.getDefaultMessage());
+            }
+            System.out.println(result.getFieldError().getDefaultMessage());
+          //  System.out.println(result.getFieldError("uNo").getDefaultMessage());
+            System.out.println("校验失败");
+            model.addAttribute("User",user);
+            model.addAttribute("result",result);
+            return "admin/sign";
         }
 
 
-        List<User> data = new ArrayList<>();
-
-      //  data.add(userService.sign(user));
-
-
-        return ResultUtil.success(data);
-
+        BizResult bizResult=userService.doSign(user);
+        if (bizResult.getSuccess()){
+            return "admin/login";
+        }else {
+            model.addAttribute("User",user);
+            model.addAttribute("result",result);
+            model.addAttribute("msg",bizResult.getMsg());
+          return "admin/sign";
+        }
     }
+
+
 
 
     @GetMapping(value = "excel")
@@ -144,53 +140,5 @@ public class UserComtroller {
     }
 
 
-    @GetMapping(value = "/index")
-    public String index() {
 
-        return "index";
-    }
-
-    @GetMapping(value = "/list")
-    public String list() {
-        return "list";
-
-    }
-
-    @GetMapping(value = "/question")
-    public String question() {
-        return "question";
-    }
-
-    @GetMapping(value = "/submit")
-    public String submit() {
-        return "submit";
-    }
-
-
-    @GetMapping(value = "/admin")
-    public String admin() {
-        return "admin/admin";
-    }
-
-    @GetMapping(value = "/fenlei")
-    public String fenlei() {
-        return "admin/fenlei";
-    }
-
-    @GetMapping(value = "/gonggao")
-    public String gonggao() {
-        return "admin/gonggao";
-    }
-
-    @GetMapping(value = "/adminquestion")
-    public String adminquestion() {
-
-        return "admin/question";
-    }
-
-    @GetMapping(value = "/websocket")
-    public String websocket() {
-
-        return "fragment/websocket";
-    }
 }

@@ -1,13 +1,10 @@
 package com.nchu.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nchu.domain.DO.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,23 +33,6 @@ public class UserComtrollerTest {
     }
 
 
-    @Test
-    public void insertUser() throws Exception {
 
-        User user = new User();
-        user.setuNo(12345678L);
-        user.setGender("男");
-        user.setuName("赖晓星");
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        mvc.perform(MockMvcRequestBuilders.post("/sign")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(user)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-
-
-
-    }
 
 }
