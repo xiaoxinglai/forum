@@ -3,99 +3,113 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="fragment/layout">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>注册页面</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <div  class="container" style="margin-top: 60px;width: 800px;height: 600px;">
-    	<div class="row">
-    		<div class="col-md-12">
-    			<h1 style="text-align: center;">在线答疑系统注册</h1>
-    		</div>
-    		
-    		<div class="col-md-12">
-    			<form class="form-horizontal" method="post" th:object="${User}" th:action="@{/doSign}">
-  <div class="form-group">
-    <label for="stuNo" class="col-sm-2 control-label">学号</label>
-    <div class="col-sm-10">
-      <input  class="form-control" id="stuNo" name="uNo" th:field="*{uNo}"  placeholder="学号"/>
-        <td  th:if="${result.getFieldError('uNo')!=NullPointerException}"><p th:text="${result.getFieldError('uNo').getDefaultMessage()}">description</p></td>
-        <td  th:if="${msg!=NullPointerException}"><p th:text="${msg}">description</p></td>
+    <div class="container" style="margin-top: 60px;width: 800px;height: 600px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="text-align: center;">在线答疑系统注册</h1>
+            </div>
+
+            <div class="col-md-12">
+                <form class="form-horizontal" method="post" th:object="${UserForm}" th:action="@{/doSign}">
+                    <div class="form-group">
+                        <label for="stuNo" class="col-sm-2 control-label">学号</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="stuNo" name="uNo" th:field="*{uNo}" placeholder="学号"/>
+                            <td th:if="${result.getFieldError('uNo')!=NullPointerException}"><p
+                                    th:text="${result.getFieldError('uNo').getDefaultMessage()}">description</p></td>
+                            <td th:if="${msg!=NullPointerException}"><p th:text="${msg}">description</p></td>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword" th:field="*{password}"
+                                   name="password" placeholder="Password"/>
+                            <td th:if="${result.getFieldError('password')!=NullPointerException}"><p
+                                    th:text="${result.getFieldError('password').getDefaultMessage()}">description</p>
+                            </td>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRePassword" class="col-sm-2 control-label">请再次输入密码</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputRePassword"
+                                   name="Repassword" placeholder="Password"/>
+                            <td th:if="${result.getFieldError('password')!=NullPointerException}"><p
+                                    th:text="${result.getFieldError('password').getDefaultMessage()}">description</p>
+                            </td>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="name" th:field="*{uName}" name="uName" placeholder="姓名"/>
+                            <td th:if="${result.getFieldError('uName')!=NullPointerException}"><p
+                                    th:text="${result.getFieldError('uName').getDefaultMessage()}">description</p></td>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="college" class="col-sm-2 control-label">学院</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="college" th:field="*{college}" th:value="*{college}"
+                                   name="college" placeholder="学院"/>
+                            <td th:if="${result.getFieldError('college')!=NullPointerException}"><p
+                                    th:text="${result.getFieldError('college').getDefaultMessage()}">description</p>
+                            </td>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <select name="gender" th:field="*{gender}" th:value="*{gender}" class="form-control">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择注册身份</label>
+                        <div class="col-sm-10">
+                            <select name="tag" th:field="*{tag}" th:value="*{tag}" class="form-control">
+                                <option value="2">教师</option>
+                                <option value="0">学生</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-1">
+                            <input type="submit" value="注册" class="btn btn-default"/>
+                        </div>
+                        <div class="col-sm-9">
+                            <a  class="btn btn-default" href="login.html">登陆</a>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
 
     </div>
-  </div>
-  <div class="form-group">
-    <label for="inputPassword" class="col-sm-2 control-label">密码</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword" th:field="*{password}"  th:value="*{password}" name="password" placeholder="Password"/>
-    </div>
-    </div>
-    
-    
-    <div class="form-group">
-    <label class="col-sm-2 control-label">姓名</label>
-    <div class="col-sm-10">
-      <input  class="form-control" id="name" th:field="*{uName}"  name="uName" placeholder="姓名"/>
-    </div>
-  </div>
-  
-  <div class="form-group">
-    <label for="college" class="col-sm-2 control-label">学院</label>
-    <div class="col-sm-10">
-      <input  class="form-control" id="college" th:field="*{college}" th:value="*{college}" name="college" placeholder="学院"/>
-    </div>
-  </div>
-  
- 
- <div class="form-group">
- <label class="col-sm-2 control-label">性别</label>
-    <div class="col-sm-10">
-    	<select name="gender"  th:field="*{gender}" th:value="*{gender}" class="form-control">
-    			<option value="男">男</option>
-    				<option value="女">女</option>
-    		</select>
-    
-    </div>
-  </div>
-  
-  
- 
- 
- 
- <div class="form-group">
- <label class="col-sm-2 control-label">选择注册身份</label>
-    <div class="col-sm-10">
-    	<select name="tag" th:field="*{tag}"  th:value="*{tag}" class="form-control">
-    			<option value="2">教师</option>
-    				<option value="0">学生</option>
-    		</select>
-    
-    </div>
-  </div>
- 
- <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-1">
-        <input type="submit"  value="注册" class="btn btn-default"/>
-    </div>
-    
-  
-    
-  </div>
-</form>
-    			
-    		
-    		</div>
-    		
-    	</div>
-    	
-    </div>
-    
-    
-    
-    
-    
+
+
 </div>
-	</body>
+</body>
 </html>

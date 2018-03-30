@@ -6,7 +6,6 @@ package com.nchu.enums;
 public enum ResultEnum {
     UNKOWN_ERROR(-1,"未知错误"),
     SUCCESS(0,"成功"),
-    SNO_NULL_ERROR(1,"学号不能未空"),
     SQL_EXCEPTION(2,"sql执行出错"),
     ;
     private Integer code;

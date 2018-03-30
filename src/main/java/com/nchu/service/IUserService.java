@@ -1,5 +1,6 @@
 package com.nchu.service;
 
+import com.nchu.domain.DO.Account;
 import com.nchu.domain.DO.User;
 import com.nchu.result.BizResult;
 
@@ -14,4 +15,9 @@ public interface IUserService {
      * @return
      */
     BizResult<Boolean> doSign(User user);
+
+    /**
+     * 用户登陆的方法
+     */
+    BizResult<User> doLogin(Account account);
 }

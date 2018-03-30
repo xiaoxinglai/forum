@@ -8,28 +8,42 @@ import java.util.List;
  */
 public class Result<T> {
 
-    //    错误码
+
+
     private Integer code;
-    //提示信息
+
     private String msg;
-    //内容
+
     private List<T> data;
+
+    private Boolean isSuccess;
 
     public Result() {
     }
 
-    public Result(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-
+    public static Result Create(List data){
+        Result result=new Result();
+        result.setSuccess(Boolean.TRUE);
+        result.setData(data);
+        return result;
     }
 
-    public Result(Integer code, String msg, List<T> data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
+
+    public static Result Create(Integer code,String msg){
+        Result result=new Result();
+        result.setSuccess(Boolean.FALSE);
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
     }
 
+    public Boolean getSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(Boolean success) {
+        isSuccess = success;
+    }
 
     public Integer getCode() {
         return code;

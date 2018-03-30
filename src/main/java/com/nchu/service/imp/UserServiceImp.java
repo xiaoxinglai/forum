@@ -1,5 +1,6 @@
 package com.nchu.service.imp;
 
+import com.nchu.domain.DO.Account;
 import com.nchu.domain.DO.User;
 import com.nchu.enums.ParamEnum;
 import com.nchu.enums.ResultEnum;
@@ -30,7 +31,10 @@ public class UserServiceImp implements IUserService {
             return BizResult.Create(ParamEnum.PARAM_IS_NULL.getCode(), ParamEnum.PARAM_IS_NULL.getMsg());
         }
         user.setSignDate(new Date());
+
         User result = userMapper.selectByNo(user.getuNo());
+
+
         if (Objects.isNull(result)) {
             int i = userMapper.insert(user);
             if (i > 0) {
@@ -41,6 +45,23 @@ public class UserServiceImp implements IUserService {
 
         } else {
             return BizResult.Create(ParamEnum.NO_IS_REPEAT.getCode(),ParamEnum.NO_IS_REPEAT.getMsg());
+        }
+
+    }
+
+    @Override
+    public BizResult<User> doLogin(Account account) {
+
+        User result = userMapper.selectByNo(account.getuNo());
+        if (Objects.isNull(result)) {
+        return BizResult.Create(ParamEnum.NO_USER.getCode(), ParamEnum.NO_USER.getMsg());
+        }
+
+        if (result.getPassword().equals(account.getPassword())){
+
+            return  BizResult.Create(result);
+        }else {
+            return BizResult.Create(ParamEnum.PASS_ERR.getCode(), ParamEnum.PASS_ERR.getMsg());
         }
 
     }

@@ -6,6 +6,8 @@ package com.nchu.enums;
 public enum ParamEnum {
     PARAM_IS_NULL(10,"参数为空"),
     NO_IS_REPEAT(11,"学号重复"),
+    NO_USER(12,"用户不存在"),
+    PASS_ERR(13,"密码错误")
     ;
     private Integer code;
     private String msg;
@@ -24,4 +26,5 @@ public enum ParamEnum {
     public String getMsg() {
         return msg;
     }
+
 }

@@ -21,6 +21,7 @@ public class User implements Serializable {
      *
      * @mbggenerated
      */
+    @NotBlank(message = "学院不能为空")
     private String college;
 
     /**
@@ -363,5 +364,21 @@ public class User implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    public User() {
+    }
+
+    public User(Long uId, String college, String gender, Integer permission, Date signDate, Integer tag, String uName, Long uNo, String detail, String password) {
+        this.uId = uId;
+        this.college = college;
+        this.gender = gender;
+        this.permission = permission;
+        this.signDate = signDate;
+        this.tag = tag;
+        this.uName = uName;
+        this.uNo = uNo;
+        this.detail = detail;
+        this.password = password;
     }
 }

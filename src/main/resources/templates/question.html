@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="fragment/layout">
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="fragment/layout">
 <!-- layout文件路径-->
 
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>首页</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>首页</title>
 </head>
 
 <body>
@@ -37,62 +37,46 @@
             时间：2017-03-29
             描述：问题内容页面
         -->
-        <div class="row">
+        <div class="row" th:object="${question}">
             <!--
                 作者：offline
                 时间：2017-03-29
                 描述：标题
             -->
             <div class="col-md-12">
-                <h1 style="text-align: center;">java环境的配置</h1>
+                <h1 style="text-align: center;">
+                    <div th:text="*{title}"></div><p style="visibility: hidden" id="questionId" th:text="*{questionId}"></p>
+                </h1>
             </div>
             <!--
                 作者：offline
                 时间：2017-03-29
                 描述：信息
             -->
-            <div class="col-md-4"><h6 style="text-align: center;">2017/3/27 21:00</h6></div>
-            <div class="col-md-4"><h6 style="text-align: center;">提问人：黄同学</h6></div>
-            <div class="col-md-4"><h6 style="text-align: center;">答疑教师：胡老师</h6></div>
+            <div class="col-md-4"><span>发布时间:</span><span style="text-align: center;" th:text="*{time}">2017/3/27 21:00</span></div>
+            <div class="col-md-4"><span>提问人:</span><span style="text-align: center;" th:text="*{personName}">黄同学</span></div>
+            <div class="col-md-4"><span>答疑教师:</span><span style="text-align: center;" th:text="*{techerName}">胡老师</span></div>
             <!--
                 作者：offline
                 时间：2017-03-29
                 描述：内容
             -->
+
             <div class="col-md-12">
                 <div style="background-color:lightgray; width: 100%;">
                     <div style="padding: 20px 5px 5px 20px;">
-                        <p>
-                            安装JDK 选择安装目录 安装过程中会出现两次 安装提示 。第一次是安装 jdk ，第二次是安装 jre 。建议两个都安装在同一个java文件夹中的不同文件夹中。（不能都安装在java文件夹的根目录下，jdk和jre安装在同一文件夹会出错）
-                            如下图所示<br />
-
-
-                            1：安装jdk 随意选择目录 只需把默认安装目录 \java 之前的目录修改即可<br />
-                            2：安装jre→更改→ \java 之前目录和安装 jdk <br />
-                            注：若无安装目录要求，可全默认设置。无需做任何修改，两次均直接点下一步。<br />
-
-
-
-
-                            安装完JDK后配置环境变量  计算机→属性→高级系统设置→高级→环境变量<br />
-
-
-                            系统变量→新建 JAVA_HOME 变量 。<br />
-                            变量值填写jdk的安装目录（本人是 E:\Java\jdk1.7.0)<br />
-                            系统变量→寻找 Path 变量→编辑<br />
-                            在变量值最后输入 %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;<br />
-                            （注意原来Path的变量值末尾有没有;号，如果没有，先输入；号再输入上面的代码）<br />
-
-
-                            系统变量→新建 CLASSPATH 变量<br />
-                            变量值填写   .;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar（注意最前面有一点）<br />
-                            系统变量配置完毕<br />
-
-
-                            检验是否配置成功 运行cmd 输入 java -version （java 和 -version 之间有空格）<br />
-                            若如图所示 显示版本信息 则说明安装和配置成功。<br />
-                        </p>
+                        <div th:utext="*{content}"></div>
                     </div>
+
+                    <div th:if="${question.questionDesc!=NullPointerException}">
+
+                        <h3>老师的回复：</h3>
+                        <div style="padding: 20px 5px 5px 20px;">
+                            <div th:utext="*{questionDesc}"></div>
+                        </div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -107,16 +91,94 @@
                 时间：2017-03-29
                 描述：点赞行
             -->
-            <div class="col-md-1 col-md-offset-9">
-                <span class="glyphicon glyphicon-eye-open"></span>10086</div>
+            <div class="col-md-2 col-md-offset-6">
+                <span>访问量:</span> <span class="glyphicon glyphicon-eye-open" th:text="*{visitNum}"></span>
+            </div>
 
-            <div class="col-md-1">
-                <span class="glyphicon glyphicon-thumbs-up"></span>8556</div>
+            <div class="col-md-2">
+                <span>点此点赞:</span><span id="btnGood"  class="glyphicon glyphicon-thumbs-up"></span><span id="goodnum" th:text="*{goodNum}"></span>
+            </div>
 
-            <div class="col-md-1">
-                <span class="glyphicon glyphicon-thumbs-down"></span>1556</div>
+            <div class="col-md-2">
+                <span>点此差评:</span><span id="btnBad" class="glyphicon glyphicon-thumbs-down" ></span><span id="badnum" th:text="*{badNum}"></span>
+            </div>
+            <script>
+                var aa=0;
+                var bb=0;
+                /*  <![CDATA[*/
+                $("#btnGood").bind("click",function(){
+
+                    $.ajax({
+                        url: "/question/ajax/GoodOrBad?questionId="+$('#questionId').text()+"&key=1&goodNum="+$('#goodnum').text(),
+                        type: "get",
+                        processData: false,  // 不处理数据
+                        contentType: false,   // 不设置内容类型
+                        success: function (fd) { //返回json结果
+
+                            if(fd==-1){
+                                alert("登陆后才能点赞噢");
+                            }
+                            if(fd==-2){
+                                alert("你已经点过赞啦");
+                            }
+
+                            if(fd>0){
+                                $('#goodnum').text(fd);
+                                if(aa==0){
+                                    $("#btnGood").css("background-color","#9d9d9d");
+                                    aa++;
+                                }else{
+                                    $("#btnGood").css("background-color","white");
+                                    aa--;
+                                }
+
+                            }
+
+                        }
+                    });
+
+                })
 
 
+
+                $("#btnBad").bind("click",function(){
+
+                    $.ajax({
+                        url: "/question/ajax/GoodOrBad?questionId="+$('#questionId').text()+"&key=0&badNum="+$('#badnum').text(),
+                        type: "get",
+                        processData: false,  // 不处理数据
+                        contentType: false,   // 不设置内容类型
+                        success: function (fd) { //返回json结果
+
+                            if(fd==-1){
+                                alert("登陆后才能给差评啦");
+                            }
+                            if(fd==-3){
+                                alert("你已经给过差评啦");
+                            }
+
+                            if(fd>0){
+                                $('#badnum').text(fd);
+                                if(bb==0){
+                                    $("#btnBad").css("background-color","#9d9d9d");
+                                    bb++;
+                                }else{
+                                    $("#btnBad").css("background-color","white");
+                                    bb--;
+                                }
+
+
+                            }
+
+
+                        }
+                    });
+
+                })
+
+
+                /* ]]>*/
+            </script>
             <!--
                 作者：offline
                 时间：2017-03-29
@@ -127,63 +189,71 @@
                     <!-- Default panel contents -->
 
                     <div class="panel-heading" style="margin-top: 15px;">评论列表</div>
-                    <nav class="panel-body">
-                        <span class="glyphicon glyphicon-user">王同学</span>
-                        <div>讲的太好了，给666个赞</div>
+                    <nav class="panel-body" id="tab">
+
+                    </nav>
+                    <nav class="pull-right">
+                        <ul class="pagination" id="pagination1"><!--分页导航 pagination  &laquo;箭头图标-->
+
+                        </ul>
+                    </nav>
 
 
-                        <div class="col-md-1 col-md-offset-9">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>856</div>
+                    <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+                    <script type="text/javascript">
+                        $.jqPaginator('#pagination1', {
+                            totalPages: 10,
+                            visiblePages: 10,
+                            currentPage: 1,
+                            prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                            next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                            page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                            /*  <![CDATA[*/
+                            onPageChange: function (num, type) {
+                                $.ajax({
+                                    url: "/comment/ajaxList/?questionId="+$('#questionId').text()+"&currPage="+num,
+                                    type: "get",
+                                    success: function (data) {
 
-                        <div class="col-md-1">
-                            <span class="glyphicon glyphicon-thumbs-down"></span>16</div>
+                                        $('#pagination1').jqPaginator('option', {
+                                            currentPage: data.currentPage,
+                                            totalPages: data.totalCount
+                                        });
 
-                        <div class="col-md-1 ">
-                            <button class="btn btn-default">回复</button>
-                        </div>
-                        <!--
-                            作者：offline
-                            时间：2017-03-29
-                            描述：分割
-                        -->
-                        <span class="glyphicon glyphicon-user">李同学</span>
-                        <div>找不到路径怎么办啊 求指教！</div>
+                                        $("#tab").html('<div></div>');
 
-                        <div class="col-md-1 col-md-offset-9">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>856</div>
+                                        for (var i = 0; i < data.data.length; i++) {
+                                            $("#tab").append(
 
-                        <div class="col-md-1">
-                            <span class="glyphicon glyphicon-thumbs-down"></span>16</div>
+                                                '<span class=\"glyphicon glyphicon-user\">'+data.data[i].personName+'</span>'+
+                                                '<div>'+data.data[i].content+'</div>'+ '<div class=\"col-md-1 col-md-offset-8\"><span class=\"glyphicon glyphicon-thumbs-up\">'+data.data[i].goodNum+'</span></div>'
+                                                + '<div class=\"col-md-1\"><span class=\"glyphicon glyphicon-thumbs-down\">'+data.data[i].badNum+'</span></div>'
+                                                +'<div class=\"col-md-2\"><button class=\"btn btn-default\">回复</button>'
+                                                +'<button class=\"btn btn-default\">删除该评论</button></div>'
+                                            );
 
-                        <div class="col-md-1 ">
-                            <button class="btn btn-default">回复</button>
-                        </div>
-
-                        <!--
-                            作者：offline
-                            时间：2017-03-29
-                            描述：分页
-                        -->
-
-                        <nav class="pull-right" >
-                            <ul class="pagination"><!--分页导航 pagination  &laquo;箭头图标-->
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
-                        </nav>
-                        <!--
-                            作者：offline
-                            时间：2017-03-29
-                            描述：分页结束
-                        -->
+                                        }
 
 
-</nav>
+
+
+                                    }
+                                });
+
+
+                            }
+
+                            /* ]]>*/
+                        });
+
+
+                    </script>
+
+                    <!--
+                        作者：offline
+                        时间：2017-03-29
+                        描述：分页结束
+                    -->
                 </div>
             </div>
         </div>
@@ -195,25 +265,19 @@
         -->
 
         <div class="col-md-12">
-        <from>
-            <div id="summernote"><br/><br/>
-                <br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/><br/><br/><br/><br/>
-                <br/><br/><br/></div>
-            <script>
-                $(document).ready(function() {
-                    $('#summernote').summernote();
-                });
-            </script>
+            <form method="post" th:action="@{/comment/submit}">
+                <input name="questionId" type="hidden" th:value="${question.questionId}" />
+                <input name="courseId" type="hidden" th:value="${question.courseId}" />
 
-            <button class="btn btn-default">提交</button>
+                <textarea name="content"  id="summernote"></textarea>
 
-        </from>
+                <button class="btn btn-default" type="submit">提交</button>
+
+            </form>
+
+        </div>
 
     </div>
-
-</div>
-
 
 
 </div>

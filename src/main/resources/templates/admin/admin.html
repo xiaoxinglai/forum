@@ -34,59 +34,96 @@
 							<th>赞次数</th>
 							<th>踩次数</th>
 							<th>分类</th>
-							<th>是否置顶</th>
+							<th>是否加精</th>
 							<th>级别</th>
-							<th>状态</th>
+							<th>是否回复</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					
-					<tbody>
-						<tr>
-							<td>1</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-						</tr>
-						<tr>
-							<td>2</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-						
-						</tr>
-						<tr>
-							<td>3</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-							
-						</tr>
-						<tr>
-							<td>4</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-								
-						</tr>
-						<tr>
-							<td>5</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-							
-						</tr>
-						<tr>
-							<td>6</td><td>java环境变量的配置</td><td>17</td><td>0</td><td>java</td><td>是</td><td>初级</td><td>已发布</td><td><a href="editquestion.html" class="btn btn-info">编辑回复</a>&nbsp;<button class="btn btn-info">删除</button></td>
-								
-						</tr>
+					<tbody id="tab">
+
+
 					</tbody>
 				</table>
-				
 				<nav class="pull-right" >
-  <ul class="pagination" style="margin-top: 5px;">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
+  <ul class="pagination" id="pagination1" style="margin-top: 5px;">
   </ul>
 </nav>
+				<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+				<script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+				<script type="text/javascript">
+                    $.jqPaginator('#pagination1', {
+                        totalPages: 10,
+                        visiblePages: 10,
+                        currentPage: 1,
+                        prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                        next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+						/*  <![CDATA[*/
+                        onPageChange: function (num, type) {
+                            $.ajax({
+
+
+                                url: "/question/ajaxList/?currPage="+num,
+                                type: "get",
+                                success: function (data) {
+
+                                    $('#pagination1').jqPaginator('option', {
+                                        currentPage: data.currentPage,
+                                        totalPages: data.totalCount
+                                    });
+                                    $("#tab").html('<div></div>');
+
+                                    for (var i = 0; i < data.data.length; i++) {
+
+                                        if(data.data[i].isCream==false){
+                                            var isCream='否';
+                                        }else{
+                                            var isCream='是';
+                                        }
+
+                                        if(data.data[i].questionDesc==true){
+                                            var questionDesc='否';
+                                        }else{
+                                            var questionDesc='是';
+                                        }
+
+
+                                        $("#tab").append(
+                                        '<tr><td>'+data.data[i].questionId+'</td>' +
+                                        '<td>'+data.data[i].title+'</td>' +
+                                        '<td>'+data.data[i].goodNum+'</td>' +
+                                        '<td>'+data.data[i].badNum+'</td>' +
+                                        '<td>'+data.data[i].courseName+'</td>' +
+                                        '<td>'+isCream+'</td>' +
+                                        '<td>'+data.data[i].levelDesc+'</td>' +
+                                        '<td>'+questionDesc+'</td>' +
+                                        '<td>' +
+                                        '<a href=\"/edit?questionId='+data.data[i].questionId+'\" class="btn btn-info">编辑回复</a>' +
+                                        '&nbsp;<a href=\"/question/delete?questionId='+data.data[i].questionId+'\" class="btn btn-info">删除</a> ' +
+                                        '<a href=\"/addCream?questionId='+data.data[i].questionId+'&current='+num+'\" class="btn btn-info">加精</a>' +
+                                        '<a href=\"/CanceCream?questionId=+'+data.data[i].questionId+'&current='+num+'\" class="btn btn-info">取消加精</a></td></tr>')
+                                    }
+
+
+
+
+                                }
+                            });
+
+
+                        }
+
+						/* ]]>*/
+                    });
+
+
+				</script>
+
+
+
 			</div>
 			
 			

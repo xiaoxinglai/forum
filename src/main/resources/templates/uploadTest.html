@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- layout文件路径-->
+
+<body>
+<h1>单文件上传</h1>
+<form action="/upload" method="post"  enctype="multipart/form-data">
+    <input type="file" name="file"/>
+    <input type="submit" value="Upload"/>
+</form>
+<script type="application/javascript" src="../../static/js/jquery.js" th:src="@{/js/jquery.js}" ></script>
+
+<h1>多字段多文件上传</h1>
+<form method="post" enctype="multipart/form-data" action="/batch/upload">
+    <p>文件1：<input type="text" name="id" /></p>
+    <p>文件2：<input type="text" name="name" /></p>
+    <p>文件3：<input type="file" name="file" /></p>
+    <p>文件3：<input type="file" name="file" /></p>
+    <p><input type="submit" value="上传" /></p>
+</form>
+
+<form id="add" name="addname" method="post" enctype="multipart/form-data" action="/batch/upload">
+    <p>文件1：<input type="text" name="id" /></p>
+    <p>文件2：<input type="text" name="name" /></p>
+    <p>文件3：<input type="file" name="file" /></p>
+    <p>文件3：<input type="file" name="file" /></p>
+    <p><input type="button" value="上传"  onclick="addForm()"/></p>
+</form>
+<script>
+    function addForm(){
+
+        var fd = new FormData(document.querySelector("#add"));
+
+        $.ajax({
+            url: "/batch/upload",
+            type: "POST",
+            data: fd,
+            processData: false,  // 不处理数据
+            contentType: false,   // 不设置内容类型
+            success: function (data) { //返回json结果
+                alert(data);
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

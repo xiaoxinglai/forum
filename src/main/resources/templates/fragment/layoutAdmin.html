@@ -5,12 +5,114 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1"/>
 		<title>答疑系统后台管理</title>
+		<script>
+            var websocket = null;
+            if ("WebSocket" in window) {
+                websocket = new WebSocket('ws://localhost:8080/webSocket');
+
+            } else {
+                alert('该浏览器不支持websocket');
+            }
+
+
+            websocket.onopen=function (event) {
+                console.log('建立连接');
+
+            }
+
+            websocket.onclose=function (event) {
+
+                console.log('连接关闭');
+            }
+
+            websocket.onmessage=function (event) {
+
+
+                console.log('收到消息'+event.data);
+                alert(event.data);
+                //todo
+            }
+
+            websocket.onerror=function (event) {
+                console.log('通信错误');
+
+            }
+
+            Window.onbeforeunload=function () {
+                    websocket.close();
+                }
+
+        </script>
 
 		<link rel="stylesheet"  href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
-
-
 		<script type="application/javascript" src="../../static/js/jquery.js" th:src="@{/js/jquery.js}" ></script>
 		<script language="JavaScript" src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
+
+		<!-- include google-code-prettify -->
+
+		<link rel="stylesheet" href="../../static/prettify/prettify.css" th:href="@{/prettify/prettify.css}" />
+		<script type="text/javascript" src="../../static/prettify/prettify.js" th:src="@{/prettify/prettify.js}" ></script>
+
+		<script>
+            $(document).ready(function() {
+                $('#summernote').summernote({
+                    callbacks: {
+                        onImageUpload: function(files) {
+                            console.log('Upload image start...');
+                            sendFile(files[0]);
+                            console.log('Upload image end...');
+                        }
+                    },
+
+                    height: 200,
+                    tabsize: 2,
+                    // close prettify Html
+                    prettifyHtml:true,
+                    toolbar:[
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['Insert', ['picture', 'link', 'video','table','hr']],
+                        ['Font Style', ['fontsize', 'color','bold','italic','underline','clear']],
+                        ['Paragraph style', ['style','ol','ul','paragraph','height']],
+                        ['Misc', ['fullscreen','codeview','undo','redo']],
+                        // Add highlight plugin
+                        ['highlight', ['highlight']]
+                    ],
+                    lang:'zh-CN'
+                });
+
+
+
+            });
+
+
+
+
+
+
+
+            function sendFile(file) {
+                data = new FormData();
+                data.append("file", file);
+                url = "/upload";
+                console.log(url);
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (url) {
+                        console.log('url:>>>'+url);
+                        $('#summernote').summernote('insertImage', url);
+                    }
+                });
+            }
+		</script>
+
+
+
+
 		<style type="text/css">
 			@media  (min-width: 768px) {
 			#slide_sub	{
@@ -74,14 +176,17 @@
 						
 						<li><a href="#sub1" class="collapse" data-toggle="collapse">管理功能</a></li>
 						<ul id="sub1" class="nav collapse">
-						<li><a href="admin.html"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;问题管理</a></li>
+						<li><a href="#" th:href="@{/admin}"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;问题管理</a></li>
+							<li><a href="#" th:href="@{/admin/courseAdd}"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;课程发布</a></li>
+							<li><a href="admin.html"><span class="glyphicon glyphicon-folder-open "></span>&nbsp;课程管理</a></li>
+
 							<li><a href="#"><span class="glyphicon glyphicon-user "></span>&nbsp;管理员管理</a></li>
 						</ul>
 						
 						<li><a href="#sub2" class="collapse" data-toggle="collapse">公告管理</a></li>
 							<ul id="sub2" class="nav collapse">
 				
-							<li><a href="editgonggao.html"><span class="glyphicon glyphicon-user "></span>&nbsp;公告编辑</a></li>
+							<li><a href="gonggao.html"><span class="glyphicon glyphicon-user "></span>&nbsp;公告编辑</a></li>
 					
 						</ul>
 						

@@ -1,6 +1,8 @@
 package com.nchu.controller;
 
-import com.nchu.domain.DO.User;
+import com.nchu.domain.DO.Account;
+import com.nchu.domain.Form.QuestionForm;
+import com.nchu.domain.Form.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,15 +16,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class PageSkipComtroller {
 
+
+
     @GetMapping(value ="/login")
-    public String login(){
+    public String login(@ModelAttribute Account account, BindingResult result, Model model){
+        model.addAttribute("Account",account);
+        model.addAttribute("result",result);
         return "admin/login";
     }
 
     @GetMapping(value ="/sign")
-    public String sign(@ModelAttribute User user, BindingResult result, Model model){
+    public String sign(@ModelAttribute UserForm user, BindingResult result, Model model){
 
-      model.addAttribute("User",user);
+      model.addAttribute("UserForm",user);
       model.addAttribute("result",result);
         return "admin/sign";
     }
@@ -33,27 +39,18 @@ public class PageSkipComtroller {
         return "index";
     }
 
-    @GetMapping(value = "/list")
-    public String list() {
-        return "list";
 
-    }
 
-    @GetMapping(value = "/question")
-    public String question() {
-        return "question";
-    }
+
 
     @GetMapping(value = "/submit")
-    public String submit() {
+    public String submit(@ModelAttribute QuestionForm questionForm, BindingResult result, Model model) {
+        model.addAttribute("QuestionForm",questionForm);
+        model.addAttribute("result",result);
+
         return "submit";
     }
 
-
-    @GetMapping(value = "/admin")
-    public String admin() {
-        return "admin/admin";
-    }
 
     @GetMapping(value = "/fenlei")
     public String fenlei() {
@@ -65,11 +62,7 @@ public class PageSkipComtroller {
         return "admin/gonggao";
     }
 
-    @GetMapping(value = "/adminquestion")
-    public String adminquestion() {
 
-        return "admin/question";
-    }
 
     @GetMapping(value = "/websocket")
     public String websocket() {

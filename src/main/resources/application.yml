@@ -1,15 +1,34 @@
+
+#定义外部上传路径
+web:
+ upload-path: /Users/user12/Desktop/upload/
+
+
+
+
 spring:
-  profiles:
-    active: dev
+  redis:
+  database: 1
+  host: localhost
+  pool:
+    max-active: 20
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://daily-mhc-o.mysql.rds.aliyuncs.com:3306/db_bk
-    username: bk
-    password: qURfiR2NFG
-  #jpa:
-    #hibernate:
-     # ddl-auto: update
-    #show-sql: true
+    platform: h2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: root
+    password: 123456
+    schema: classpath:db/schema.sql  #进行该配置后，每次启动程序，程序都会运行resources/db/schema.sql文件，对数据库的结构进行操作。
+    data: classpath:db/data.sql    #进行该配置后，每次启动程序，程序都会运行resources/db/data.sql文件，对数据库的数据操作。
+  http:
+    multipart:
+      maxFileSize: 100Mb
+      maxRequestSize: 100Mb
+
+  jpa:
+   hibernate:
+     ddl-auto: update
+     show-sql: true
 
   thymeleaf:
         enabled: true
@@ -21,6 +40,7 @@ spring:
         check-template: false
         mode: HTML5
         cache: false
+
 #logging:
  # pattern:
   #  console: "%d - %msg%n"
@@ -34,3 +54,9 @@ mybatis:
   config-location: classpath:mybatis-config.xml
  # type-aliases-package: com.nchu.domain.DO
   #mapper-locations: classpath:mybatis-mapper/*.xml
+
+
+logging:
+  level:
+    org:
+     hibernate: debug

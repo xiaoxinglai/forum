@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="fragment/layout">
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="fragment/layout">
 <!-- layout文件路径-->
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>首页</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>首页</title>
 </head>
 
 <body>
@@ -17,7 +17,6 @@
             时间：2017-03-28
             描述：head begin
         -->
-
 
 
     <div class="container">
@@ -33,12 +32,14 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                        <img  style="width:100%;height: 200px;" src="../static/img/image1.jpg" th:src="@{/img/image1.jpg}"/>
+                        <img style="width:100%;height: 200px;" src="../static/img/image1.jpg"
+                             th:src="@{/img/image1.jpg}"/>
                         <div class="carousel-caption">
                         </div>
                     </div>
                     <div class="item">
-                        <img  style="width:100%;height: 200px;" src="../static/img/image2.jpg" th:src="@{/img/image2.jpg}"/>
+                        <img style="width:100%;height: 200px;" src="../static/img/image2.jpg"
+                             th:src="@{/img/image2.jpg}"/>
                         <div class="carousel-caption">
                         </div>
                     </div>
@@ -78,14 +79,101 @@
 
                 <div style="align-content:space-between;background-color:lightgray;margin: 5px; padding: 5px; ">
                     <h4>精品推荐</h4>
-                    <ol>
-                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                    <ol id="t1">
+
                     </ol>
+
+                    <div style="align-content:space-between;background-color:lightgray;" class="pull-right">
+                        <span id="s1"></span>  <span id="s2"></span>
+                        <a href="#" id="csyy">上一页</a>
+                        <a href="#" id="cxyy">下一页</a>
+                    </div>
+                    <script type="text/javascript">
+                        /*  <![CDATA[*/
+                        var a = 1;
+                        $('#s1').html("当前在"+a+"页");
+
+                        $.ajax({
+                            url: "/question/cream/ajaxList?currPage=" + 1,
+                            type: "get",
+                            success: function (data) {
+                                $('#s2').html("总共"+data.totalCount+"页");
+                                $("#t1").html('<div></div>');
+                                for (var i = 0; i < data.data.length; i++) {
+                                    $("#t1").append(
+                                        '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                    )
+                                }
+
+                            }
+                        })
+
+
+                        $(function () {
+
+                            $("#csyy").click(function () {
+                                if (a <= 1) {
+                                    alert("已经没有上一页了");
+                                } else {
+                                    a = a - 1;
+                                    $('#s1').html("当前在"+a+"页");
+                                    $.ajax({
+                                        url: "/question/cream/ajaxList?currPage=" + a,
+                                        type: "get",
+                                        success: function (data) {
+                                            $("#t1").html('<div></div>');
+                                            for (var i = 0; i < data.data.length; i++) {
+                                                $("#t1").append(
+                                                    '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                                )
+                                            }
+
+
+                                        }
+                                    })
+
+                                }
+
+
+                            })
+
+                            $("#cxyy").click(function () {
+                                    a = a + 1;
+                                    $.ajax({
+                                        url: "/question/cream/ajaxList?currPage=" + a,
+                                        type: "get",
+                                        success: function (data) {
+
+                                            if(a>data.totalCount){
+
+                                                a=a-1;
+
+                                                alert("已经是最后一页了！");
+                                            }else{
+                                                $('#s1').html("当前在"+a+"页");
+                                                $("#t1").html('<div></div>');
+                                                for (var i = 0; i < data.data.length; i++) {
+                                                    $("#t1").append(
+                                                        '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                                    )
+                                                }
+
+                                            }
+
+
+
+
+
+
+                                        }
+                                    })
+
+
+                            })
+                        })
+
+                        /* ]]>*/
+                    </script>
                 </div>
 
             </div>
@@ -94,66 +182,171 @@
 
                 <div style="align-content:space-between;background-color:lightgray;margin: 5px; padding: 5px; ">
                     <h4>热门推荐</h4>
-                    <ol>
-                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;" >java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
-                        <li>	<a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                    <ol id="t2">
+
                     </ol>
+                    <div style="align-content:space-between;background-color:lightgray;" class="pull-right">
+                        <span id="ss1"></span>  <span id="ss2"></span>
+                        <a href="#" id="zsyy">上一页</a>
+                        <a href="#" id="zxyy">下一页</a>
+                    </div>
+                    <script type="text/javascript">
+                        /*  <![CDATA[*/
+                        var b = 1;
+                        $('#ss1').html("当前在"+b+"页");
+
+                        $.ajax({
+                            url: "/question/hotQuestion/ajaxList?currPage=" + 1,
+                            type: "get",
+                            success: function (data) {
+                                $('#ss2').html("总共"+data.totalCount+"页");
+                                $("#t2").html('<div></div>');
+                                for (var i = 0; i < data.data.length; i++) {
+                                    $("#t2").append(
+                                        '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                    )
+                                }
+
+                            }
+                        })
+
+
+                        $(function () {
+
+                            $("#zsyy").click(function () {
+                                if (b <= 1) {
+                                    alert("已经没有上一页了");
+                                } else {
+                                    b = b - 1;
+                                    $('#ss1').html("当前在"+b+"页");
+                                    $.ajax({
+                                        url: "/question/hotQuestion/ajaxList?currPage=" + b,
+                                        type: "get",
+                                        success: function (data) {
+                                            $("#t2").html('<div></div>');
+                                            for (var i = 0; i < data.data.length; i++) {
+                                                $("#t2").append(
+                                                    '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                                )
+                                            }
+
+
+                                        }
+                                    })
+
+                                }
+
+
+                            })
+
+                            $("#zxyy").click(function () {
+                                b = b + 1;
+                                $.ajax({
+                                    url: "/question/hotQuestion/ajaxList?currPage=" + b,
+                                    type: "get",
+                                    success: function (data) {
+
+                                        if(b>data.totalCount){
+
+                                            b=b-1;
+
+                                            alert("已经是最后一页了！");
+                                        }else{
+                                            $('#ss1').html("当前在"+b+"页");
+                                            $("#t2").html('<div></div>');
+                                            for (var i = 0; i < data.data.length; i++) {
+                                                $("#t2").append(
+                                                    '<li><a href=\"/question/detail/' + data.data[i].questionId + '\" style=\"display: block;\">' + data.data[i].title + '</a></li>'
+                                                )
+                                            }
+
+                                        }
+
+
+
+
+
+
+                                    }
+                                })
+
+
+                            })
+                        })
+
+                        /* ]]>*/
+                    </script>
                 </div>
             </div>
         </div>
 
 
         <div style="margin: 5px;">
-            <div style="margin: 3px;">
-                类别筛选
-                <select>
-                    <option>C语言</option>
-                    <option>java</option>
-                    <option>C++</option>
-                    <option>sql</option>
-                    <option>数据结构</option>
-                </select>
 
-                等级筛选
-                <select>
-                    <option>低级</option>
-                    <option>中级</option>
-                    <option>高级</option>
-                </select>
-            </div>
-
-
-
-
-
-
-            <div class="row">
-
-
-                <div class="col-md-4">
-                    <a  href="listsss.html" ><!--thumbnail-缩略图-->
-                        <img src="../static/img/c.jpg" th:src="@{/img/c.jpg}"  alt="c语言" class="img-thumbnail" style="width: 300px; height: 300px;"/>
-                    </a>
-                    <a href="listsss.html" style="text-align: center; display: block; margin: 3px;">c语言</a>
-                    <div style="text-align: center;"> <span class="glyphicon glyphicon-eye-open">100086 </span>  &nbsp; <span class="
-glyphicon glyphicon-thumbs-up">7500 </span>  &nbsp; <span class="glyphicon glyphicon-thumbs-down">2000</span>
-
-                    </div>
-                </div>
-
+            <div class="row" id="tab">
 
 
             </div>
+
+            <nav class="pull-right">
+                <ul class="pagination" id="pagination1"><!--分页导航 pagination  &laquo;箭头图标-->
+
+                </ul>
+            </nav>
+            <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+            <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+
+            <script type="text/javascript">
+                $.jqPaginator('#pagination1', {
+                    totalPages: 10,
+                    visiblePages: 10,
+                    currentPage: 1,
+                    prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                    next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                    page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                    /*  <![CDATA[*/
+                    onPageChange: function (num, type) {
+                        $.ajax({
+                            url: "/course/ajaxList/?currPage=" + num,
+                            type: "get",
+                            success: function (data) {
+
+                                $('#pagination1').jqPaginator('option', {
+                                    currentPage: data.currentPage,
+                                    totalPages: data.totalCount
+                                });
+
+
+                                $("#tab").html('<div></div>');
+
+
+                                for (var i = 0; i < data.data.length; i++) {
+                                    $("#tab").append(
+                                        '<div class=\"col-md-4\">' +
+                                        '<a  href=\"/question/list?courseId=' + data.data[i].courseId + '\">' +
+                                        '<img src=\"' + data.data[i].imgPath + '\" alt=\"' + data.data[i].title + '\"class=\"img-thumbnail\" style=\"width: 300px; height: 300px;\"/>' +
+                                        '</a>' +
+                                        '<a href=\"/question/list?courseId=' + data.data[i].courseId + '\"style=\"text-align: center;font-size: larger; display: block; margin: 3px;\">' + data.data[i].title + '</a>' +
+                                        '</div>'
+                                    )
+
+                                }
+
+
+                            }
+                        });
+
+
+                    }
+
+                    /* ]]>*/
+                });
+
+
+            </script>
 
 
         </div>
-
-
-
 
 
     </div>

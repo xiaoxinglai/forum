@@ -1,10 +1,12 @@
 package com.nchu.controller;
 
-import com.fasterxml.jackson.core.JsonEncoding;
+import com.nchu.domain.DO.Account;
 import com.nchu.domain.DO.User;
-import com.nchu.mapper.UserMapper;
+import com.nchu.domain.Form.UserForm;
+import com.nchu.enums.UserEnum;
 import com.nchu.result.BizResult;
 import com.nchu.service.IUserService;
+import com.nchu.service.WebSocket;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -15,11 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -37,59 +42,119 @@ public class UserComtroller {
     @Autowired
     private IUserService userService;
 
-   @Autowired
-    private UserMapper userMapper;
-//     @Autowired
-//    private WebSocket webSocket;
-//
-//    @RequestMapping(value = "/questionMapperId/{Id}",method = RequestMethod.GET)
-//    @ResponseBody
-//    public Question getquestionMapperId(@PathVariable("Id") Long Id){
-//        webSocket.sendMessage("查询了id");
-//        return null; //questionMapper.selectByPrimaryKey(Id);
-//
-//
-//    }
-//
 
-    @RequestMapping(value = "/userMapper/{uId}",method = RequestMethod.GET)
-    @ResponseBody
-    public User getUserMapperById(@PathVariable("uId") Long uId){
-        return userMapper.selectByPrimaryKey(uId);
+     @Autowired
+    private WebSocket webSocket;
 
-
+    /**
+     * webSocket测试
+     * @param Id
+     */
+    @RequestMapping(value = "/webSocket/{Id}",method = RequestMethod.GET)
+    public void webSocket(@PathVariable("Id") Long Id){
+        webSocket.sendMessage("查询了id");
     }
 
+
+    /**
+     * 处理注册
+     * @param userForm
+     * @param result
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/doSign",method = RequestMethod.POST)
-    public String getUserMapperById(@Valid User user,BindingResult result,Model model){
+    public String doSign(@Valid UserForm userForm, BindingResult result, Model model){
+
+        if (!userForm.getPassword().equals(userForm.getRepassword())){
+            model.addAttribute("UserForm",userForm);
+            model.addAttribute("result",result);
+            model.addAttribute("msg","两次密码不一致");
+            return "admin/sign";
+        }
+
+
         if(result.hasErrors()){
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
                 System.out.println(error.getDefaultMessage());
             }
-            System.out.println(result.getFieldError().getDefaultMessage());
-          //  System.out.println(result.getFieldError("uNo").getDefaultMessage());
-            System.out.println("校验失败");
-            model.addAttribute("User",user);
+
+            model.addAttribute("UserForm",userForm);
             model.addAttribute("result",result);
             return "admin/sign";
         }
 
+        User user=new User(userForm.getuId(),userForm.getCollege(),userForm.getGender(),userForm.getPermission(),userForm.getSignDate(),userForm.getTag(),userForm.getuName(),userForm.getuNo(),userForm.getDetail(),userForm.getPassword());
 
         BizResult bizResult=userService.doSign(user);
         if (bizResult.getSuccess()){
-            return "admin/login";
+
+            return "redirect:/login";
         }else {
-            model.addAttribute("User",user);
+            model.addAttribute("UserForm",userForm);
             model.addAttribute("result",result);
             model.addAttribute("msg",bizResult.getMsg());
           return "admin/sign";
         }
     }
 
+    /**
+     *处理登录
+     * @param account
+     * @param result
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/doLogin",method = RequestMethod.POST)
+    public String doLogin(@Valid Account account, BindingResult result, Model model, HttpSession session){
+        if(result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+            for (ObjectError error : list) {
+                System.out.println(error.getDefaultMessage());
+            }
+
+            model.addAttribute("Account",account);
+            model.addAttribute("result",result);
+            return "admin/login";
+        }else {
+
+            BizResult<User> bizResult=userService.doLogin(account);
+            if (bizResult.getSuccess()){
+                session.setAttribute("User",bizResult.getDate());
+                User user=bizResult.getDate();
+                if (user.getTag().equals(UserEnum.TECHER.getCode())){
+
+                    return "redirect:/admin";
+                }else if (user.getTag().equals(UserEnum.STUDENT.getCode())){
+                    return "redirect:/index";
+                }else {
+                    return "redirect:/admin";
+                }
+
+            }else {
+                String msg=bizResult.getMsg();
+                System.out.println("校验失败");
+                model.addAttribute("Account",account);
+                model.addAttribute("result",result);
+                model.addAttribute("msg",msg);
+                return "admin/login";
+            }
+
+        }
 
 
 
+    }
+
+
+    /**
+     * 导出excel
+     * @param response
+     * @throws IOException
+     * @throws WriteException
+     */
     @GetMapping(value = "excel")
     public void excel(HttpServletResponse response) throws IOException, WriteException {
 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="fragment/layout">
+<!-- layout文件路径-->
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>首页</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!--
+            作者：offline
+            时间：2017-03-28
+            描述：head begin
+        -->
+
+    <div class="container" style="margin-top: 55px;">
+        <ol class="breadcrumb">
+            <li><a href="#">首页</a></li>
+            <li class="active">问题列表</li>
+        </ol>
+
+        <!--
+            作者：offline
+            时间：2017-03-29
+            描述：路径导航结束
+        -->
+
+        <!--
+            作者：offline
+            时间：2017-03-29
+            描述：提问与推荐列表
+        -->
+        <div class="row">
+            <div class="col-md-9">
+                <div style="align-content:space-between;background-color:lightgray; padding: 5px;height: 150px; ">
+                    <h4>精品推荐</h4>
+                    <ol>
+                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+                        <li><a href="questionsd.html" style="display: block;">java环境变量配置</a></li>
+
+                    </ol>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div>
+                    <a href="#" th:href="@{/submit}" class="btn btn-info"
+                       style="width: 100%; height: 150px; padding: 20px;"><span class="glyphicon glyphicon-edit"
+                                                                                style="font-size: 50px;"></span>
+                        <p style="font-size: 50px;">提问</p></a>
+                </div>
+
+            </div>
+        </div>
+        <p id="p1"></p>
+        <ul class="pagination" id="pagination1"></ul>
+        <p id="p2"></p>
+        <ul class="pagination" id="pagination2"></ul>
+
+
+        <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+        <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+
+        <script type="text/javascript">
+            $.jqPaginator('#pagination1', {
+                totalPages: 100,
+                visiblePages: 10,
+                currentPage: 3,
+                prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                onPageChange: function (num, type) {
+                    $('#p1').text(type + '：' + num);
+                }
+            });
+            $.jqPaginator('#pagination2', {
+                totalPages: 100,
+                visiblePages: 10,
+                currentPage: 3,
+                prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                onPageChange: function (num, type) {
+                    $('#p2').text(type + '：' + num);
+                }
+            });
+        </script>
+
+
+
+
+        <script type="text/javascript" th:src="@{/js/jquery-1.11.3.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.pagination.js}"></script>
+
+        <script type="text/javascript">
+
+            // 点击分页按钮以后触发的动作
+            function handlePaginationClick(new_page_index, pagination_container) {
+                $("#stuForm").attr("action", "<%=context %>/jdbcSql/JdbcSqlServlet?pageNum=" + (new_page_index+1));
+                $("#stuForm").submit();
+                return false;
+            }
+
+            $(function(){
+                $("#News-Pagination").pagination(${result.totalRecord}, {
+                    items_per_page:${result.pageSize}, // 每页显示多少条记录
+                    current_page:${result.currentPage} - 1, // 当前显示第几页数据
+                    num_display_entries:8, // 分页显示的条目数
+                    next_text:"下一页",
+                    prev_text:"上一页",
+                    num_edge_entries:2, // 连接分页主体，显示的条目数
+                    callback:handlePaginationClick
+                });
+
+
+            });
+
+        </script>
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

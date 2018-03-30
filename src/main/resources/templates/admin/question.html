@@ -21,17 +21,19 @@
 
 
 
-			<div class="row">
+			<div class="row" th:object="${question}">
 				<div class="col-md-12">
-					<h1 style="text-align: center;">java环境的配置</h1>
+					<h3 style="text-align: center;" th:text="*{title}">java环境的配置</h3>
 				</div>
 				<!--
                     作者：offline
                     时间：2017-03-29
                     描述：信息
                 -->
-				<div class="col-md-offset-4 col-md-4"><h6 style="text-align: center;">提问时间：2017/3/27 21:00</h6></div>
-				<div class="col-md-2"><h6 style="text-align: center;">提问人：黄同学</h6></div>
+				<div class="col-md-3"><h6 style="text-align: center;" th:text="*{time}"></h6></div>
+				<div class="col-md-3"><h6 style="text-align: center;" th:text="*{personName}">提问人：黄同学</h6></div>
+				<div class="col-md-3"><h6 style="text-align: center;" th:text="*{courseName}"></h6></div>
+				<div class="col-md-3"><h6 style="text-align: center;" th:text="*{levelDesc}">提问人：黄同学</h6></div>
 				<!--
                     作者：offline
                     时间：2017-03-29
@@ -41,9 +43,7 @@
 					<h4>问题描述</h4>
 					<div style="background-color:lightgray; width: 100%;">
 						<div style="padding: 20px 5px 5px 20px;">
-							<p>
-								java环境变量怎么配置啊！问下老师
-							</p>
+							<div th:utext="*{content}"></div>
 						</div>
 					</div>
 
@@ -55,39 +55,17 @@
                     描述：回复
                 -->
 				<div class="col-md-12" style="margin-top: 20px;">
-					<form>
-						<div style="margin-top: 10px;">
-							分类：<select class="form-control">
-							<option>C语言</option>
-							<option>java</option>
-							<option>C++</option>
-							<option>sql</option>
-							<option>数据结构</option>
-						</select>
-						</div>
-						<div style="margin-top: 10px; margin-bottom: 10px;">
-							等级：<select class="form-control">
-							<option>初级</option>
-							<option>中级</option>
-							<option>高级</option>
+					<form method="post" th:action="@{/doEdit}">
 
-						</select>
-						</div>
-						<div id="summernote"><br/><br/>
-							<br/><br/><br/><br/><br/><br/>
-							<br/><br/><br/><br/><br/><br/><br/>
-							<br/><br/><br/></div>
-						<script>
-                            $(document).ready(function() {
-                                $('#summernote').summernote();
-                            });
-						</script>
+						<textarea name="questionDesc"  th:field="*{questionDesc}" id="summernote"></textarea>
+                        <input type="hidden" name="questionId"   th:field="*{questionId}"/>
+
 
 						<button class="btn btn-default">提交</button>
 
 
-					</form>
 
+                    </form>
 				</div>
 
 

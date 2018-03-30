@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="fragment/layoutAdmin">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<title>答疑系统后台管理</title>
+	</head>
+	<body>
+
+	<div layout:fragment="pagemain">
+			<!--内容-->
+		<div class="pager_main">
+			<!--面包屑导航-->
+			<ol class="breadcrumb" >
+				<li><a href="#">管理首页</a></li>
+				<li><a href="#">栏目</a></li>
+				<li><a href="#">增加栏目</a></li>
+			</ol>
+
+			<div class="row">
+				<div class="col-md-12">
+					<form id="add"  method="post" enctype="multipart/form-data">
+
+						<div style="margin-bottom: 5px;">
+							课程标题：<input  name="title"  class="form-control"/>
+							课程封面：<input type="file"  name="file" class="form-control"/>
+						</div>
+
+                        <button type="button"   class="btn btn-info" onclick="addForm()">提交</button>
+					</form>
+                    <p id="tip"></p>
+                    <script>
+                        function addForm(){
+
+                            var fd = new FormData(document.querySelector("#add"));
+
+                            $.ajax({
+                                url: "/course/upload",
+                                type: "POST",
+                                data: fd,  //data表示要发送的数据
+                                processData: false,  // 不处理数据
+                                contentType: false,   // 不设置内容类型
+                                success: function (data) { //返回json结果
+                                    alert(data);
+
+                                    $('#tip').html("上传成功！！！");
+                                    location.reload();
+                                }
+                            });
+                        }
+                    </script>
+
+
+				</div>
+			</div>
+
+
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">问题列表</div>
+						<div class="panel-body ">
+							<table class="table table-striped table-hover table-bordered">
+								<thead>
+								<tr>
+									<th>ID</th>
+									<th>课程名称</th>
+									<th>操作</th>
+
+								</tr>
+								</thead>
+
+								<tbody id="tab">
+
+
+								</tbody>
+							</table>
+							<div class="col-md-12">
+								<nav class="pull-right" >
+									<ul class="pagination" id="pagination1" style="margin-top: 5px;">
+									</ul>
+								</nav>
+
+                                <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+                                <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+                                <script type="text/javascript">
+
+
+                                        $.jqPaginator('#pagination1', {
+                                            totalPages: 10,
+                                            visiblePages: 10,
+                                            currentPage: 1,
+                                            prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                                            next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                                            page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                                            /*  <![CDATA[*/
+                                            onPageChange: function (num, type) {
+                                                $.ajax({
+                                                    url: "/course/ajaxList/?currPage="+num,
+                                                    type: "get",
+                                                    success: function (data) {
+
+                                                        $('#pagination1').jqPaginator('option', {
+                                                            currentPage: data.currentPage,
+                                                            totalPages: data.totalCount
+                                                        });
+                                                        $("#tab").html('<div></div>');
+
+
+
+                                                        for (var i = 0; i < data.data.length; i++) {
+                                                            $("#tab").append(
+                                                                '<tr>' +
+                                                                '<td>' + data.data[i].courseId + '</td>' +
+                                                                '<td>' + data.data[i].title + '</td>' +
+                                                                '<td>'+ '<button type=\"button\"   class=\"btn btn-info\" onclick=\"Del('+data.data[i].courseId+')\">删除</button></td>'+
+
+                                                                '</tr>');
+
+                                                        }
+
+
+
+
+                                                    }
+                                                });
+
+
+                                            }
+
+
+                                        });
+
+
+
+
+
+
+                                    function Del(num){
+                                        $.ajax({
+                                            url: "/course/del?num="+num,
+                                            type: "get",
+                                            success: function (data) { //返回json结果
+                                                alert(data);
+                                                location.reload();
+                                            }
+                                        });
+
+                                    }
+
+                                    /* ]]>*/
+                                </script>
+							</div>
+
+
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+	</div>
+
+
+
+	</body>
+</html>
