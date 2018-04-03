@@ -35,7 +35,6 @@
 							<th>踩次数</th>
 							<th>分类</th>
 							<th>是否加精</th>
-							<th>级别</th>
 							<th>是否回复</th>
 							<th>操作</th>
 						</tr>
@@ -84,9 +83,11 @@
                                             var isCream='是';
                                         }
 
-                                        if(data.data[i].questionDesc==true){
+                                        if(data.data[i].isResource==false){
                                             var questionDesc='否';
+                                            var style="color: red";
                                         }else{
+                                            var style="color: black";
                                             var questionDesc='是';
                                         }
 
@@ -98,8 +99,7 @@
                                         '<td>'+data.data[i].badNum+'</td>' +
                                         '<td>'+data.data[i].courseName+'</td>' +
                                         '<td>'+isCream+'</td>' +
-                                        '<td>'+data.data[i].levelDesc+'</td>' +
-                                        '<td>'+questionDesc+'</td>' +
+                                        '<td>'+'<span style=\"'+style+'\">'+questionDesc+'</span></td>' +
                                         '<td>' +
                                         '<a href=\"/edit?questionId='+data.data[i].questionId+'\" class="btn btn-info">编辑回复</a>' +
                                         '&nbsp;<a href=\"/question/delete?questionId='+data.data[i].questionId+'\" class="btn btn-info">删除</a> ' +

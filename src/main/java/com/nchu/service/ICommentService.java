@@ -11,10 +11,15 @@ import java.util.List;
 public interface ICommentService {
 
 
+    int deleteBycommentId(Long commentId,Long uId);
     Boolean SubmitComment(Comment comment);
 
     List<Comment> queryCommentbyQuestionId(Long questionId);
     PageResult<Comment> selectCommentByQuestionId(Long questionId,Integer current);
+    /**
+     * 对评论进行点赞取消处理
+     */
+    Long CommentGoodOrBad(Long commentId,Integer key,Long Num);
 
 
 

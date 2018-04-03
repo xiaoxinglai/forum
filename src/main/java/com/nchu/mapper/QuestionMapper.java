@@ -21,6 +21,11 @@ public interface QuestionMapper {
 
     List<Question>  selectQuestionList(@Param("courseId") Long courseId,@Param("level") Long level,@Param("currentPage")  Integer currentPage,@Param("pageSize") Integer pageSize);
     Integer selectCountQuestion(@Param("courseId") Long courseId,@Param("level") Long level);
+
+    List<Question>  selectQuestionListByUID(@Param("UID") Long UID, @Param("currentPage") Integer currentPage,@Param("pageSize") Integer pageSize);
+    Integer selectCountQuestionByUID(@Param("UID") Long UID);
+
+
     Integer selectCountQuestionForKey(@Param("key") String key);
 
 

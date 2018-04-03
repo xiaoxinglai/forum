@@ -13,6 +13,7 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    int updateGoodOrBad(@Param("commentId") Long commentId,@Param("key") Integer key,@Param("Num") Long Num);
     int deleteByPrimaryKey(Long commentId);
 
     /**

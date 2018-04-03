@@ -19,6 +19,17 @@ public class CommentService implements ICommentService {
     private CommentMapper commentMapper;
 
     @Override
+    public int deleteBycommentId(Long commentId, Long uId) {
+       Comment comment= commentMapper.selectByPrimaryKey(commentId);
+       if (comment.getPersonId().equals(uId)){
+           return commentMapper.deleteByPrimaryKey(commentId);
+       }else {
+
+           return -2;
+       }
+    }
+
+    @Override
     public Boolean SubmitComment(Comment comment) {
         if (commentMapper.insert(comment) > 0) {
             return Boolean.TRUE;
@@ -40,6 +51,15 @@ public class CommentService implements ICommentService {
 
 
         return PageResult.Create(comments, current, totalSize/PageResult.pageSize+1);
+
+
+    }
+
+    @Override
+    public Long CommentGoodOrBad(Long commentId, Integer key, Long Num) {
+
+             commentMapper.updateGoodOrBad(commentId,key,Num);
+            return Num;
 
 
     }

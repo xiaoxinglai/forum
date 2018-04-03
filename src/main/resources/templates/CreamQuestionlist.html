@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="fragment/layout">
+<!-- layout文件路径-->
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>首页</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!--
+            作者：offline
+            时间：2017-03-28
+            描述：head begin
+        -->
+
+    <div class="container" style="margin-top: 55px;">
+        <ol class="breadcrumb">
+            <li><a href="#">首页</a></li>
+            <li class="active">问题列表</li>
+        </ol>
+
+
+
+
+
+        <!--
+            作者：offline
+            时间：2017-03-29
+            描述：问题列表开始
+        -->
+        <nav class="panel panel-default" style="margin-top:20px;">
+            <!-- Default panel contents -->
+
+            <div class="panel-heading" style="margin-top: 15px;">问题列表</div>
+            <div class="panel-body">
+                <!-- Table -->
+                <table id="tab" class="table  table-hover">
+
+
+
+
+                </table>
+            </div>
+
+            <!--
+                作者：offline
+                时间：2017-03-29
+                描述：分页
+            -->
+            <nav class="pull-right">
+                <ul class="pagination" id="pagination1"><!--分页导航 pagination  &laquo;箭头图标-->
+                </ul>
+            </nav>
+
+            <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+            <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
+            <script type="text/javascript">
+                $.jqPaginator('#pagination1', {
+                    totalPages: 10,
+                    visiblePages: 10,
+                    currentPage: 1,
+                    prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+                    next: '<li class="next"><a href="javascript:;">Next</a></li>',
+                    page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+                    /*  <![CDATA[*/
+                    onPageChange: function (num, type) {
+                        $.ajax({
+                            url: "/question/cream/ajaxList?currPage="+num,
+                            type: "get",
+                            success: function (data) {
+
+                                $('#pagination1').jqPaginator('option', {
+                                    currentPage: data.currentPage,
+                                    totalPages: data.totalCount
+                                });
+                                $("#tab").html(
+                                '<thead><td>序号</td><td>问题名称</td> <td>提问人</td> <td>答疑老师</td> <td>浏览次数</td> <td>点赞次数</td> <td>踩次数</td> </thead>'
+                                );
+
+
+
+                                for (var i = 0; i < data.data.length; i++) {
+                                    $("#tab").append(
+                                        '<tr>' +
+                                        '<td>' + data.data[i].questionId + '</td>' +
+                                        '<td><a href=\"/question/detail/' + data.data[i].questionId + '\">' + data.data[i].title + '</a></td>' +
+                                        '<td><span class=\"glyphicon glyphicon-user\"></span><p style=\"display: inline-block\" >'+data.data[i].personName+'</p></td>'+
+
+                                        '<td><span class=\"glyphicon glyphicon-education\"></span> <p style=\"display: inline-block\">'+data.data[i].techerName+'</p></td>'+
+
+                                        '<td><span class=\"glyphicon glyphicon-eye-open\"></span><p style=\"display: inline-block\">'+data.data[i].visitNum+'</p></td>'+
+                                        '<td><span class=\"glyphicon glyphicon-thumbs-up\"></span> <p style=\"display: inline-block\">'+data.data[i].goodNum+'</p></td>'+
+                                        '<td><span class=\"glyphicon glyphicon-thumbs-down\"></span> <p style=\"display: inline-block\">'+data.data[i].badNum+'</p></td>'+
+
+
+                                        '</tr>');
+
+                                }
+
+
+
+
+                            }
+                        });
+
+
+                    }
+
+                    /* ]]>*/
+                });
+
+
+            </script>
+
+        </nav>
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

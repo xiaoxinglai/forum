@@ -20,6 +20,5 @@ public class QuestionForm {
     private String title;
     @NotNull(message = "课程类型不能为空")
     private Long courseId;
-    @NotNull(message = "难度级别不能为空")
-    private Long level;
+
 }

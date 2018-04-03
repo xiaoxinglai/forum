@@ -2,6 +2,7 @@ package com.nchu.controller;
 
 import com.nchu.domain.DO.Question;
 import com.nchu.domain.DO.User;
+import com.nchu.enums.UserEnum;
 import com.nchu.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,11 @@ public class AdminController {
     private IQuestionService questionService;
 
     @GetMapping(value = "/admin")
-    public String admin() {
-
-        //todo 要鉴权
+    public String admin(HttpSession session) {
+        User user=(User)session.getAttribute("User");
+        if (user.getTag().equals(UserEnum.STUDENT.getCode())){
+            return  "index";
+        }
         return "admin/admin";
     }
 

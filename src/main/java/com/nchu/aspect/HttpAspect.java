@@ -57,10 +57,6 @@ public class HttpAspect {
     }
 
 
-//
-//    public Boolean valid(){
-//
-//    }
 
 
 

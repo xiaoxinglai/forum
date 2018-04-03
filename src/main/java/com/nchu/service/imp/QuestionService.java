@@ -1,14 +1,18 @@
 package com.nchu.service.imp;
 
+import com.nchu.domain.DO.Course;
 import com.nchu.domain.DO.Question;
+import com.nchu.domain.DO.User;
+import com.nchu.domain.Form.QuestionForm;
 import com.nchu.domain.VO.PageResult;
+import com.nchu.mapper.CourseMapper;
 import com.nchu.mapper.QuestionMapper;
 import com.nchu.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +24,8 @@ public class QuestionService implements IQuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public Long questionGoodOrBad(Long questionId, Integer key,Long goodNum,Long badNum) {
@@ -84,12 +90,25 @@ public class QuestionService implements IQuestionService {
     /**
      * 插入问题
      *
-     * @param question
+     * @param questionForm
      * @return
      */
     @Override
     @Transactional
-    public Long InsertQuestion(Question question) {
+    public Long InsertQuestion(QuestionForm questionForm, User user) {
+
+        Question question = new Question();
+        question.setTitle(questionForm.getTitle());
+        question.setContent(questionForm.getContent());
+        question.setCourseId(questionForm.getCourseId());
+
+        Course course=courseMapper.selectByPrimaryKey(questionForm.getCourseId());
+        question.setCourseName(course.getTitle());
+        question.setTime(new Date());
+
+        question.setPersonName(user.getuName());
+        question.setPersonId(user.getuId());
+
 
         if (questionMapper.insertSelective(question) > 0) {
 
@@ -122,6 +141,14 @@ public class QuestionService implements IQuestionService {
 
         return PageResult.Create(questionList, currentPage, totalSize/PageResult.pageSize+1);
 
+    }
+
+    @Override
+    public PageResult<Question> selectQuestionByUID(Long UID, Integer currentPage) {
+        List<Question> questionList = questionMapper.selectQuestionListByUID(UID, (currentPage - 1) * PageResult.pageSize, PageResult.pageSize);
+        Integer totalSize=questionMapper.selectCountQuestionByUID(UID);
+
+        return PageResult.Create(questionList, currentPage, totalSize/PageResult.pageSize+1);
     }
 
     @Override

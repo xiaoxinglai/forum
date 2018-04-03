@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,19 +64,8 @@ public class QuestionComtroller {
             model.addAttribute("result", result);
             return  "/submit";
         } else {
-
-            Question question = new Question();
-            question.setTitle(questionForm.getTitle());
-            question.setContent(questionForm.getContent());
-            question.setLevel(questionForm.getLevel());
-            question.setCourseId(questionForm.getCourseId());
-            question.setTime(new Date());
             User user = (User) session.getAttribute("User");
-            question.setPersonName(user.getuName());
-            question.setPersonId(user.getuId());
-
-
-            Long id=questionService.InsertQuestion(question);
+            Long id=questionService.InsertQuestion(questionForm,user);
             webSocket.sendMessage(user.getuName()+"提问了问题： "+questionForm.getTitle());
             if (id>0) {
                 return "redirect:/question/detail/"+id;
@@ -122,6 +110,19 @@ public class QuestionComtroller {
 
     }
 
+    @GetMapping(value = "/ajaxList/MyQuestion")
+    @ResponseBody
+    public Object MyQuestion(@RequestParam(value = "UID", required=false) Long UID,@RequestParam(value = "currPage", required=false) Integer currPage) {
+
+
+        if (ObjectUtils.isEmpty(currPage)){
+            currPage=1;
+        }
+
+        PageResult pageResult=questionService.selectQuestionByUID(UID,currPage);
+        return pageResult;
+
+    }
     @GetMapping(value = "/cream/ajaxList")
     @ResponseBody
     public Object ajaxlistCream(@RequestParam(value = "currPage", required=false) Integer currPage) {

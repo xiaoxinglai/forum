@@ -22,27 +22,8 @@
                     </td>
 
                     <div style="margin-top: 10px;">
-                        分类：<select  name="courseId" th:field="*{courseId}" th:value="*{courseId}" class="form-control">
-                        <option value="1">C语言</option>
-                        <option value="2">java</option>
-                        <option value="3">C++</option>
-                        <option  value="4">sql</option>
-                        <option value="5">数据结构</option>
-                    </select>
-                        <td th:if="${result.getFieldError('courseId')!=NullPointerException}"><p
-                                th:text="${result.getFieldError('courseId').getDefaultMessage()}">description</p>
-                        </td>
-                    </div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        等级：<select name="level" th:field="*{level}" th:value="*{level}" class="form-control">
-                        <option value="1">初级</option>
-                        <option value="2">中级</option>
-                        <option value="3">高级</option>
-
-                    </select>
-                        <td th:if="${result.getFieldError('level')!=NullPointerException}"><p
-                                th:text="${result.getFieldError('level').getDefaultMessage()}">description</p>
-                        </td>
+                        课程ID：<span th:text="*{courseId}"></span>
+                        <input name="courseId" th:field="*{courseId}" th:value="*{courseId}" style="visibility: hidden"/>
                     </div>
 
                     <textarea name="content"  th:field="*{content}" id="summernote"></textarea>

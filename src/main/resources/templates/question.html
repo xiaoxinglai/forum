@@ -118,9 +118,7 @@
                             if(fd==-1){
                                 alert("登陆后才能点赞噢");
                             }
-                            if(fd==-2){
-                                alert("你已经点过赞啦");
-                            }
+
 
                             if(fd>0){
                                 $('#goodnum').text(fd);
@@ -153,9 +151,7 @@
                             if(fd==-1){
                                 alert("登陆后才能给差评啦");
                             }
-                            if(fd==-3){
-                                alert("你已经给过差评啦");
-                            }
+
 
                             if(fd>0){
                                 $('#badnum').text(fd);
@@ -201,6 +197,7 @@
 
                     <script type="text/javascript" th:src="@{/js/jqPaginator.js}"></script>
                     <script type="text/javascript">
+                        /*  <![CDATA[*/
                         $.jqPaginator('#pagination1', {
                             totalPages: 10,
                             visiblePages: 10,
@@ -208,7 +205,7 @@
                             prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
                             next: '<li class="next"><a href="javascript:;">Next</a></li>',
                             page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
-                            /*  <![CDATA[*/
+
                             onPageChange: function (num, type) {
                                 $.ajax({
                                     url: "/comment/ajaxList/?questionId="+$('#questionId').text()+"&currPage="+num,
@@ -226,10 +223,17 @@
                                             $("#tab").append(
 
                                                 '<span class=\"glyphicon glyphicon-user\">'+data.data[i].personName+'</span>'+
-                                                '<div>'+data.data[i].content+'</div>'+ '<div class=\"col-md-1 col-md-offset-8\"><span class=\"glyphicon glyphicon-thumbs-up\">'+data.data[i].goodNum+'</span></div>'
-                                                + '<div class=\"col-md-1\"><span class=\"glyphicon glyphicon-thumbs-down\">'+data.data[i].badNum+'</span></div>'
-                                                +'<div class=\"col-md-2\"><button class=\"btn btn-default\">回复</button>'
-                                                +'<button class=\"btn btn-default\">删除该评论</button></div>'
+                                                '<div>'+data.data[i].content+'</div>'+
+                                                '<div class=\"col-md-2 col-md-offset-6\">' +
+                                                '点赞：<span class=\"glyphicon glyphicon-thumbs-up\" id=\"cbtgood'+data.data[i].commentId+'" onclick=\"Comm(1,'+data.data[i].commentId+')\"><span id=\"cgood'+data.data[i].commentId+'\">'+data.data[i].goodNum+'</span></span>' +
+                                                '</div>'
+                                                + '<div class=\"col-md-2\">' +
+                                                '差评：<span class=\"glyphicon glyphicon-thumbs-down\" id=\"cbtbad'+data.data[i].commentId+'\" onclick=\"Comm(0,'+data.data[i].commentId+')\"><span id=\"cbad'+data.data[i].commentId+'\">'+data.data[i].badNum+'</span></span>'+
+                                                '</div>'+
+                                                '<div class=\"col-md-2\">'
+                                                +'<button type="button"  onclick=\"DelComment('+data.data[i].commentId+')\" class=\"close\"><span aria-hidden=\"true\">&times;</span></button>'
+                                               + '</div>'
+                                                +'<HR style=\"FILTER: alpha(opacity=100,finishopacity=0,style=3)\" width=\"100%\" color=#987cb9 SIZE=3>'
                                             );
 
                                         }
@@ -243,11 +247,115 @@
 
                             }
 
-                            /* ]]>*/
+
                         });
 
 
+                        var cc=0;
+                        var dd=0;
+                        function Comm(flag,id) {
+
+                            var num;
+                            if (flag == 1) {
+
+                                var name='#cgood'+id;
+                                num=$(name).text();
+                            }else{
+
+                                var name1='#cbtbad'+id;
+                                num=$(name1).text();
+
+                            }
+
+
+
+                            $.ajax({
+                                url: "/comment/ajax/GoodOrBad?commentId=" +id+ "&op=" + flag+"&num="+num,
+                                type: "get",
+                                success: function (fd) {
+
+                                    if(fd==-1){
+                                        alert("登陆后才能给差评啦");
+                                    }
+
+
+                                    if(fd>=0){
+                                        if (flag == 1) {
+
+                                            var name='#cgood'+id;
+                                            $(name).text(fd);
+                                            if(cc==0){
+                                                var name2='#cbtgood'+id;
+                                                $(name2).css("background-color","#9d9d9d");
+                                                cc++;
+                                            }else{
+                                                var name2='#cbtgood'+id;
+                                                $(name2).css("background-color","white");
+                                                cc--;
+                                            }
+                                        } else {
+                                            if(dd==0){
+                                                var name1='#cbtbad'+id;
+                                                $(name1).css("background-color","#9d9d9d");
+                                                dd++;
+                                            }else{
+                                                var name1='#cbtbad'+id;
+                                                $(name1).css("background-color","white");
+                                                dd--;
+                                            }
+                                            var name='#cbad'+id;
+                                            $(name).text(fd);
+                                        }
+
+
+
+                                    }
+
+                                }
+
+                            });
+                        }
+
+
+
+
+                        function DelComment(Id) {
+
+
+                            $.ajax({
+                                url: "/comment/ajax/delete?commentId="+Id,
+                                type: "get",
+                                success: function (fd) {
+
+                                    if (fd == -1) {
+                                        alert("登陆后才能删除");
+                                    }
+
+                                    if (fd == 1) {
+                                        alert("删除成功");
+                                        location.reload();
+
+                                    }
+                                    if (fd == -2) {
+                                        alert("只能删除自己的评论噢");
+                                    }
+                                    if (fd == 0) {
+                                        alert("服务器异常，请重试");
+                                    }
+
+                                }
+                            });
+
+
+                        }
+
+
+
+
+                        /* ]]>*/
                     </script>
+
+
 
                     <!--
                         作者：offline

@@ -1,12 +1,17 @@
 package com.nchu.service;
 
 import com.nchu.domain.DO.Question;
+import com.nchu.domain.DO.User;
+import com.nchu.domain.Form.QuestionForm;
 import com.nchu.domain.VO.PageResult;
 
 /**
  * Created by user12 on 2018/2/27.
  */
 public interface IQuestionService {
+
+
+
 
 
     /**
@@ -38,10 +43,10 @@ public interface IQuestionService {
 
     /**
      * 插入问题
-     * @param question
+     * @param questionForm
      * @return
      */
-     Long InsertQuestion(Question question);
+    Long InsertQuestion(QuestionForm questionForm, User user);
 
     /**
      * 按问题id查找问题
@@ -52,6 +57,12 @@ public interface IQuestionService {
      * 根据课程id查找问题列表
      */
     PageResult<Question> selectQuestionByCourseIdAndLevel(Long CourseId, Long level, Integer currentPage);
+
+    /**
+     * 根据用户id查找问题
+     */
+
+    PageResult<Question> selectQuestionByUID(Long UID, Integer currentPage);
 
     /**
      * 查询所有加精的问题

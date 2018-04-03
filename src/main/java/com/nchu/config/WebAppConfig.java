@@ -36,17 +36,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-//        registry.addInterceptor(new Interceptor())
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/index")
-//        .excludePathPatterns("/login")
-//        .excludePathPatterns("/sign")
-//        .excludePathPatterns("/doSign")
-//        .excludePathPatterns("/doLogin"); todo 这里还会把获取问题的接口一并拦截掉 所以要改
+        registry.addInterceptor(new Interceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/index")
+        .excludePathPatterns("/login")
+        .excludePathPatterns("/sign")
+        .excludePathPatterns("/doSign")
+        .excludePathPatterns("/doLogin");  // todo 这里还会把获取问题的接口一并拦截掉 所以要改
 
 
-         registry.addInterceptor(new Interceptor())
-                .excludePathPatterns("/**");
+//         registry.addInterceptor(new Interceptor())
+//                .excludePathPatterns("/**");
 
         super.addInterceptors(registry);
     }

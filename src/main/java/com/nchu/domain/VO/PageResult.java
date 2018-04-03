@@ -10,7 +10,7 @@ public class PageResult<T> {
     private List<T> data;
     private Integer currentPage;
     private Integer totalCount;
-    public static  final Integer pageSize=2;
+    public static  final Integer pageSize=10;
 
     private Integer code;
     private String msg;
