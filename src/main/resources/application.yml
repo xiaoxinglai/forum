@@ -13,22 +13,15 @@ spring:
   pool:
     max-active: 20
   datasource:
-    platform: h2
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/forum
     username: root
-    password: 123456
-    schema: classpath:db/schema.sql  #进行该配置后，每次启动程序，程序都会运行resources/db/schema.sql文件，对数据库的结构进行操作。
-    data: classpath:db/data.sql    #进行该配置后，每次启动程序，程序都会运行resources/db/data.sql文件，对数据库的数据操作。
+    password: xihanzhiwen
   http:
     multipart:
       maxFileSize: 100Mb
       maxRequestSize: 100Mb
 
-  jpa:
-   hibernate:
-     ddl-auto: update
-     show-sql: true
 
   thymeleaf:
         enabled: true
