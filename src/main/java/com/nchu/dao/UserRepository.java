@@ -11,5 +11,7 @@ import java.util.List;
 public interface UserRepository  extends JpaRepository<User,Long>{
 
     List<User> findByUNo(Long uNo);
+    List<User> findByTag(Integer tag);
+
 
 }

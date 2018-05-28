@@ -1,6 +1,7 @@
 package com.nchu.controller;
 
 import com.nchu.Utils.ResultUtil;
+import com.nchu.dao.UserRepository;
 import com.nchu.domain.DO.User;
 import com.nchu.domain.Result.Result;
 import com.nchu.enums.ResultEnum;
@@ -32,12 +33,22 @@ public class UserComtroller {
 
     @Autowired
     private userService userService;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @GetMapping(value = "/students/{uNo}")
     @ResponseBody
     public List<User> getUserAllForuNo(@PathVariable("uNo") Long uNo) {
 
         return userService.getUserOne(uNo);
+
+    }
+
+    @GetMapping(value = "/studentsTag/{tag}")
+    @ResponseBody
+    public List<User> getUserAllFortag(@PathVariable("tag") Integer tag) {
+        return userRepository.findByTag(tag);
 
     }
 
